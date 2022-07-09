@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../static/adminResources/css/dataTables.bootstrap4.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png"/>
+</head>
+
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center">
+            <a class="navbar-brand brand-logo" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo.svg" alt="logo"/></a>
+            <a class="navbar-brand brand-logo-mini" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo-mini.svg" alt="logo"/></a>
+        </div>
+        {% include 'admin/header.html' %}
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+
+
+        {% include 'admin/menu.html' %}
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="card">
+                     <div class="card-header" style="background-color: #7571f9;">
+                                <h4 class="card-title mb-0 text-white" style="font-size: 1rem">Complains</h4>
+                     </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table id="order-listing" class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Company Name</th>
+                                            <th>User Name</th>
+                                            <th hidden>ComplainTokenId</th>
+                                            <th>Complain Subject</th>
+                                            <th>Complain Discription</th>
+                                            <th>Complain Date</th>
+                                            <th>Complain Time</th>
+                                            <th>Complain Attachment</th>
+                                            <th>Complain Status</th>
+
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in adminComplainVOList %}
+                                            {% if i[0]['complainTo_LoginId'] is not none %}
+                                                <tr>
+                                            {% else %}
+                                                <tr bgcolor="#f0f8ff">
+                                            {% endif %}
+                                        <td>{{ i[2]['registerCompanyname'] }}</td>
+                                        <td>{{ i[1]['loginUsername'] }}</td>
+                                        <td hidden>{{ i[0]['complainTokenId'] }}</td>
+                                        <td>{{ i[0]['complainSubject'] }}</td>
+                                        <td>{{ i[0]['complainDescription'] }}</td>
+                                        <td>{{ i[0]['complainDate'] }}</td>
+                                        <td>{{ i[0]['complainTime'] }}</td>
+                                        <td>
+                                            <a href="
+
+                                                    {{ i[0]['complainFilePath'] }}{{ i[0]['complainFileName'] }}"
+                                               target="_blank">
+                                                <button class="btn btn-outline-primary">View</button>
+                                            </a>
+                                        </td>
+
+                                        {% if i[0]['complainTo_LoginId'] is none %}
+
+
+                                            <td><label
+                                                    class="badge badge-danger">{{ i[0]['complainStatus'] }}</label>
+                                            </td>
+                                            <td>
+
+                                                <a href="/admin/loadComplainReply?complainId={{ i[0]['complainId'] }}">
+                                                    <button class="btn btn-outline-primary">Reply</button>
+                                                </a>
+
+                                            </td>
+                                        {% else %}
+                                            <td><label
+                                                    class="badge badge-success">{{ i[0]['complainStatus'] }}</label>
+                                            </td>
+
+                                            <td>
+                                                <a href="/admin/viewComplainReply?complainId={{ i[0]['complainId'] }}">
+                                                    <button class="btn btn-light">View</button>
+                                                </a>
+                                            </td>
+                                        {% endif %}
+
+
+                                        </tr>
+
+                                        {% endfor %}
+
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+            <!-- {% include 'admin/footer.html' %} -->
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- base:js -->
+
+<script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- inject:js -->
+<script src="../../static/adminResources/js/off-canvas.js"></script>
+<script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+<script src="../../static/adminResources/js/template.js"></script>
+<script src="../../static/adminResources/js/settings.js"></script>
+<script src="../../static/adminResources/js/todolist.js"></script>
+<!-- endinject -->
+<!-- plugin js for this page -->
+<script src="../../static/adminResources/js/jquery.dataTables.js"></script>
+<script src="../../static/adminResources/js/dataTables.bootstrap4.js"></script>
+<!-- End plugin js for this page -->
+<!-- Custom js for this page-->
+<script src="../../static/adminResources/js/data-table.js"></script>
+<!-- End custom js for this page-->
+</body>
+
+</html>

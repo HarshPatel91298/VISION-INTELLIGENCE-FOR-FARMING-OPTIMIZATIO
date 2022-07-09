@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../static/adminResources/css/dataTables.bootstrap4.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png"/>
+
+
+</head>
+
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center">
+            <a class="navbar-brand brand-logo" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo.svg" alt="logo"/></a>
+            <a class="navbar-brand brand-logo-mini" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo-mini.svg" alt="logo"/></a>
+        </div>
+        {% include 'user/header.html' %}
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+
+
+        {% include 'user/menu.html' %}
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="card">
+                     <div class="card-header" style="background-color: #7571f9;">
+                                <h4 class="card-title mb-0 text-white" style="font-size: 1rem">View Prediction</h4>
+                     </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table id="order-listing" class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Year</th>
+                                            <th>Date</th>
+                                            <th>City Name</th>
+                                            <th>Crop Name</th>
+                                            <th>Area(Hacter)</th>
+                                            <th>Production</th>
+                                            <th>Yield(kg/hacter)</th>
+                                            <th>Price(₹)</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in predictionVOList %}
+                                            <tr>
+                                                <td>{{ i[0]['predictionYear'] }}</td>
+                                                <td>{{ i[0]['predictionDate'] }}</td>
+                                                <td>{{ i[1]['cityName'] }}</td>
+                                                <td>{{ i[0]['predictionCrop'] }}</td>
+                                                <td>{{ i[0]['predictionArea'] }}</td>
+                                                <td>{{ i[0]['predictionProduction'] }}</td>
+                                                <td>{{ i[0]['predictionYield'] }}</td>
+                                                <td>{{ i[0]['predictionPrice'] }}</td>
+                                                <td>
+                                                    <a href="/user/deletePrediction?predictionId={{ i[0]['predictionId'] }}">
+                                                        <i class="mdi mdi-delete" style="font-size: 20px;margin-left: 15px;color: #ff5e5e"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+            {% include 'user/footer.html' %}
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- base:js -->
+<script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- inject:js -->
+<script src="../../static/adminResources/js/off-canvas.js"></script>
+<script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+<script src="../../static/adminResources/js/template.js"></script>
+<script src="../../static/adminResources/js/settings.js"></script>
+<script src="../../static/adminResources/js/todolist.js"></script>
+<!-- endinject -->
+<!-- plugin js for this page -->
+<script src="../../static/adminResources/js/jquery.dataTables.js"></script>
+<script src="../../static/adminResources/js/dataTables.bootstrap4.js"></script>
+<!-- End plugin js for this page -->
+<!-- Custom js for this page-->
+<script src="../../static/adminResources/js/data-table.js"></script>
+<!-- End custom js for this page-->
+</body>
+
+</html>

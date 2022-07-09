@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../static/adminResources/css/jqvmap.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/flag-icon.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png"/>
+
+    <script src="../../static/adminResources/js/highcharts.js"></script>
+    <script src="../../static/adminResources/js/exporting.js"></script>
+    <script src="../../static/adminResources/js/data.json"></script>
+
+    <script type="text/javascript">
+
+        function loadGraph() {
+
+            var select_Crop = document.getElementById("select_Crop");
+
+            var ajax = new XMLHttpRequest();
+
+            ajax.onreadystatechange = function () {
+
+                if (ajax.readyState == 4) {
+
+                    var jsn = JSON.parse(data);
+
+                    var JsonObj = JSON.parse(data);
+
+                    var xdata = [];
+                    var ydata = [];
+                    var ydata1 = [];
+
+                    for (var key in JsonObj) {
+                        var InnerJson = JsonObj[key];
+
+                        xdata.push(InnerJson['Year']);
+                        ydata.push(InnerJson['PredictionYield']);
+                        ydata1.push(InnerJson['PredictionPrice']);
+                    }
+                    Highcharts.chart({
+                        chart: {
+                            renderTo: "container_graph",
+
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'Crop Prediction Analysis'
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            categories: xdata,
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: ''
+                            }
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0
+                            }
+                        },
+                        series: [{
+                            name: 'PredictionYield',
+                            data: ydata
+
+                        }, {
+                            name: 'PredictionPrice',
+                            data: ydata1
+
+                        }]
+                    });
+                }
+            };
+            ajax.open("get", "/user/ajaxGetGraphData?select_Crop=" + select_Crop.value, true);
+
+            ajax.send()
+        }
+
+    </script>
+
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+
+
+    {% include 'user/header.html' %}
+
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+
+
+        {% include 'user/menu.html' %}
+
+        <!-- partial -->
+        <div class="main-panel">
+
+            <div class="content-wrapper">
+                 <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center justify-content-md-center mb-2 mb-md-0">
+                                        <i class="mdi mdi mdi-comment-alert icon-md mr-3 text-danger"></i>
+                                        <div>
+                                            <p class="mb-1">Pending Complain</p>
+                                            <div class="d-flex align-items-center">
+                                                <h4 class="mb-0 mr-2 font-weight-bold">{{ pendingComplainCount }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center justify-content-md-center mb-2 mb-md-0 mt-2 mt-md-0">
+                                        <i class="mdi mdi mdi-headset icon-md mr-3 text-info"></i>
+                                        <div>
+                                            <p class="mb-1">Total Complain</p>
+                                            <div class="d-flex align-items-center">
+                                                <h4 class="mb-0 mr-2 font-weight-bold">{{ totalComplainCount }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center justify-content-md-center mt-2 mt-md-0">
+                                        <i class="mdi mdi mdi-thumb-up icon-md mr-3 text-success"></i>
+                                        <div>
+                                            <p class="mb-1">Total Feedback</p>
+                                            <div class="d-flex align-items-center">
+                                                <h4 class="mb-0 mr-2 font-weight-bold">{{ totalFeedbackCount }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                <br>
+
+                 <div class="card">
+                     <div class="card-body">
+                         <div class="form-group">
+                            <label for="exampleSelectGender">Crop Name</label>
+                            <select class="form-control" name="select_Crop" id="select_Crop" onchange="loadGraph()">
+                                <option>Select Crop</option>
+                                {% for i in predictionVOList %}
+                                    <option value="{{ i['predictionCrop'] }}">{{ i['predictionCrop'] }}</option>
+
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-lg-12 grid-margin stretch-card">
+                            <div id="dvgraph"></div>
+
+                            <div  id="container_graph" style="min-width: 1000px; height: 400px; margin: 0 auto"></div>
+
+                            <input type="hidden" name="xvalue" value=""/>
+                            <input type="hidden" name="yvalue" value=""/>
+
+                        </div>
+                     </div>
+                 </div>
+
+
+
+            </div>
+
+
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+
+
+        {% include 'user/footer.html' %}
+        </div>
+
+
+        <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+
+<script>
+
+    var JsonObj = JSON.parse(data);
+    console.log(data);
+
+    var xdata = [];
+    var ydata = [];
+    var ydata1 = [];
+
+    for (var key in JsonObj) {
+
+        console.log("key>>>>>" + key);
+
+        console.log("innerjson>>>>>>>" + JsonObj[key]);
+
+        var InnerJson = JsonObj[key];
+
+        xdata.push(InnerJson['Username']);
+        ydata.push(InnerJson['Garbage']);
+        ydata1.push(InnerJson['NotGarbage']);
+    }
+    console.log("xdata", xdata);
+    console.log("ydata", ydata);
+    console.log("ydata1", ydata1);
+
+
+    Highcharts.chart({
+        chart: {
+            renderTo: "container_graph",
+
+            type: 'column'
+        },
+        title: {
+            text: 'Crop Prediction Analysis'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: xdata,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Count'
+            }
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Garbage',
+            data: ydata
+
+        }, {
+            name: 'NotGarbage',
+            data: ydata1
+
+        }]
+    })
+
+
+</script>
+
+<!-- base:js -->
+<script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page-->
+<script src="../../static/adminResources/js/jquery.flot.js"></script>
+<script src="../../static/adminResources/js/jquery.flot.pie.js"></script>
+<script src="../../static/adminResources/js/jquery.flot.resize.js"></script>
+<script src="../../static/adminResources/js/jquery.vmap.min.js"></script>
+<script src="../../static/adminResources/js/jquery.vmap.world.js"></script>
+<script src="../../static/adminResources/js/jquery.vmap.usa.js"></script>
+<script src="../../static/adminResources/js/jquery.peity.min.js"></script>
+<script src="../../static/adminResources/js/jquery.flot.dashes.js"></script>
+<!-- End plugin js for this page-->
+<!-- inject:js -->
+<script src="../../static/adminResources/js/off-canvas.js"></script>
+<script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+<script src="../../static/adminResources/js/template.js"></script>
+<script src="../../static/adminResources/js/settings.js"></script>
+<script src="../../static/adminResources/js/todolist.js"></script>
+<!-- endinject -->
+<!-- plugin js for this page -->
+<!-- End plugin js for this page -->
+<!-- Custom js for this page-->
+<script src="../../static/adminResources/js/dashboard.js"></script>
+<!-- End custom js for this page-->
+</body>
+
+</html>
+

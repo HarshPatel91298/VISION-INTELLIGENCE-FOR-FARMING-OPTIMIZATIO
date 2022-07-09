@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../static/adminResources/css/select2.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png"/>
+
+</head>
+
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center">
+            <a class="navbar-brand brand-logo" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo.svg" alt="logo"/></a>
+            <a class="navbar-brand brand-logo-mini" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo-mini.svg" alt="logo"/></a>
+        </div>
+        {% include 'admin/header.html' %}
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+
+
+        {% include 'admin/menu.html' %}
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                             <div class="card-header" style="background-color: #7571f9;">
+                                <h4 class="card-title mb-0 text-white" style="font-size: 1rem">Add Satellite Image</h4>
+                            </div>
+                            <div class="card-body">
+                                <form class="forms-sample" action="/admin/insertImage" method="post"
+                                      enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="exampleSelectGender">State Name</label>
+                                        <select class="form-control" name="image_StateId" id="image_StateId"
+                                            onchange="loadCityByState()">
+                                            <option>Select State</option>
+                                            {% for row1 in stateVOList %}
+                                                <option value="{{ row1['stateId'] }}">{{ row1['stateName'] }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleSelectGender">City Name</label>
+                                        <select name="image_CityId" class="form-control" id="image_CityId">
+                                            <option>Select City</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label>File</label>
+                                        <input type="file" name="file" class="file-upload-default">
+                                        <div class="input-group col-xs-12">
+                                            <input type="text" class="form-control file-upload-info" disabled>
+                                            <span class="input-group-append">
+                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                        </span>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+            <!-- {% include 'admin/footer.html' %} -->
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- base:js -->
+<script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- inject:js -->
+<script src="../../static/adminResources/js/off-canvas.js"></script>
+<script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+<script src="../../static/adminResources/js/template.js"></script>
+<script src="../../static/adminResources/js/settings.js"></script>
+<script src="../../static/adminResources/js/todolist.js"></script>
+<!-- endinject -->
+<!-- plugin js for this page -->
+<script src="../../static/adminResources/js/typeahead.bundle.min.js"></script>
+<script src="../../static/adminResources/js/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- Custom js for this page-->
+<script src="../../static/adminResources/js/file-upload.js"></script>
+<script src="../../static/adminResources/js/typeahead.js"></script>
+<script src="../../static/adminResources/js/select2.js"></script>
+<!-- End custom js for this page-->
+
+ <script type="text/javascript">
+
+         function loadCityByState() {
+
+            var image_StateId = document.getElementById("image_StateId");
+            var image_CityId = document.getElementById("image_CityId");
+
+            image_CityId.innerHTML = "";
+            var ajax = new XMLHttpRequest();
+
+            ajax.onreadystatechange = function () {
+
+                if (ajax.readyState == 4) {
+                    var json = JSON.parse(ajax.responseText);
+
+                    var option1 = document.createElement("option");
+
+                    option1.value = "Select City";
+                    option1.text = "Select City";
+                    image_CityId.options.add(option1);
+
+                    for (var i = 0; i < json.length; i++) {
+                        var option = document.createElement("option");
+
+                        option.value = json[i];
+                        option.text = json[i];
+
+                        image_CityId.options.add(option)
+                    }
+                }
+            };
+            ajax.open("get", "/admin/ajaxLoadCityByState?image_StateId=" + image_StateId.value, true);
+
+            ajax.send()
+        }
+
+
+    </script>
+
+</body>
+
+</html>

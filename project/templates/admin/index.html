@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../static/adminResources/css/jqvmap.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/flag-icon.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png"/>
+
+    <script src="../../static/adminResources/js/highcharts.js"></script>
+    <script src="../../static/adminResources/js/exporting.js"></script>
+    <script src="../../static/adminResources/js/admin_data.json"></script>
+
+    <script type="text/javascript">
+
+        function loadCropByRegister() {
+
+            var select_User = document.getElementById("select_User");
+            var select_Crop = document.getElementById("select_Crop");
+
+            select_Crop.innerHTML = "";
+            var ajax = new XMLHttpRequest();
+
+            ajax.onreadystatechange = function () {
+
+                if (ajax.readyState == 4) {
+                    var json = JSON.parse(ajax.responseText);
+                    var option1 = document.createElement("option");
+
+                    option1.value = "Select Crop";
+                    option1.text = "Select Crop";
+                    select_Crop.options.add(option1);
+
+                    for (var i = 0; i < json.length; i++) {
+                        var option = document.createElement("option");
+
+                        option.value = json[i];
+                        option.text = json[i];
+
+                        select_Crop.options.add(option)
+                    }
+                }
+            };
+            ajax.open("get", "/admin/ajaxLoadCropByUser?select_User=" + select_User.value, true);
+
+            ajax.send()
+        }
+
+        function loadGraph() {
+
+            var select_Crop = document.getElementById("select_Crop");
+            var select_User = document.getElementById("select_User");
+
+            var ajax = new XMLHttpRequest();
+
+            ajax.onreadystatechange = function () {
+
+                if (ajax.readyState == 4) {
+
+                    var jsn = JSON.parse(data);
+
+
+                    var JsonObj = JSON.parse(data);
+
+                    var xdata = [];
+                    var ydata = [];
+                    var ydata1 = [];
+
+                    for (var key in JsonObj) {
+
+                        console.log("key>>>>>" + key);
+
+                        console.log("innerjson>>>>>>>" + JsonObj[key]);
+
+                        var InnerJson = JsonObj[key];
+
+                        xdata.push(InnerJson['Year']);
+                        ydata.push(InnerJson['PredictionYield']);
+                        ydata1.push(InnerJson['PredictionPrice']);
+                    }
+
+                    Highcharts.chart({
+                        chart: {
+                            renderTo: "container_graph",
+
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'Crop Prediction Analysis'
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            categories: xdata,
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: ''
+                            }
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0
+                            }
+                        },
+                        series: [{
+                            name: 'PredictionYield',
+                            data: ydata
+
+                        }, {
+                            name: 'PredictionPrice',
+                            data: ydata1
+
+                        }]
+                    });
+                }
+            };
+            ajax.open("get", "/admin/ajaxGetGraphData?select_Crop=" + select_Crop.value +
+                "&select_User=" + select_User.value, true);
+
+            ajax.send()
+        }
+
+    </script>
+
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+
+
+    {% include 'admin/header.html' %}
+
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+
+
+        {% include 'admin/menu.html' %}
+
+        <!-- partial -->
+        <div class="main-panel">
+
+        <div class="content-wrapper">
+
+            <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center justify-content-md-center mb-2 mb-md-0">
+                                        <i class="mdi mdi mdi-comment-alert icon-md mr-3 text-danger"></i>
+                                        <div>
+                                            <p class="mb-1">Pending Complain</p>
+                                            <div class="d-flex align-items-center">
+                                                <h4 class="mb-0 mr-2 font-weight-bold">{{ pendingComplainCount }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center justify-content-md-center mb-2 mb-md-0 mt-2 mt-md-0">
+                                        <i class="mdi mdi mdi-headset icon-md mr-3 text-info "></i>
+                                        <div>
+                                            <p class="mb-1">Total Complain</p>
+                                            <div class="d-flex align-items-center">
+                                                <h4 class="mb-0 mr-2 font-weight-bold">{{ totalComplainCount }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center justify-content-md-center mt-2 mt-md-0">
+                                        <i class="mdi mdi mdi-thumb-up icon-md mr-3 text-success"></i>
+                                        <div>
+                                            <p class="mb-1">Total Feedback</p>
+                                            <div class="d-flex align-items-center">
+                                                <h4 class="mb-0 mr-2 font-weight-bold">{{ totalFeedbackCount }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                <br>
+
+                 <div class="card">
+                     <div class="card-body">
+                        <div class="form-group">
+                            <label for="exampleSelectGender">Select User</label>
+                            <select class="form-control" name="select_User" id="select_User"
+                                    onchange="loadCropByRegister()">
+                                <option>Select User</option>
+                                {% for i in registerVOList %}
+                                    <option value="{{ i[0]['registerId'] }}">{{ i[0]['registerCompanyname'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                         <div class="form-group">
+                            <label for="exampleSelectGender">Crop Name</label>
+                            <select class="form-control" name="select_Crop" id="select_Crop" onchange="loadGraph()">
+                                <option>Select Crop</option>
+
+                            </select>
+                        </div>
+
+                        <br>
+
+                         <div class="col-lg-12 grid-margin stretch-card">
+                            <div id="dvgraph"></div>
+
+                            <div  id="container_graph" style="min-width: 1000px; height: 400px; margin: 0 auto"></div>
+
+                            <input type="hidden" name="xvalue" value=""/>
+                            <input type="hidden" name="yvalue" value=""/>
+
+                        </div>
+                     </div>
+                 </div>
+
+            <!--<div class="row">
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Sessions by Channel</h6>
+                            <p class="mb-3 text-muted">Measures your user's sessions and page views metrics to your
+                                website.</p>
+                            <div class="row align-items-center">
+                                <div class="col-sm-8 col-md-7">
+                                    <div id="flotPieChart" class="flot-pie-chart w-100"></div>
+                                </div>
+                                <div class="col-sm-4 col-md-5 mg-t-30 mg-sm-t-0">
+                                    <ul class="list-unstyled">
+                                        <li class="d-flex align-items-center"><span
+                                                class="d-inline-block p-1 bg-purple mr-3"></span> Very Satisfied
+                                            (26%)
+                                        </li>
+                                        <li class="d-flex align-items-center"><span
+                                                class="d-inline-block p-1 bg-primary mr-3"></span> Satisfied (39%)
+                                        </li>
+                                        <li class="d-flex align-items-center"><span
+                                                class="d-inline-block p-1 bg-teal mr-3"></span> Not Satisfied (20%)
+                                        </li>
+                                        <li class="d-flex align-items-center"><span
+                                                class="d-inline-block p-1 bg-gray mr-3"></span> Satisfied (15%)
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Traffic Sources</h6>
+                            <p class="mb-0 text-muted">Measures your user's sessions and page views metrics to your
+                                website for this month.</p>
+                            <div class="d-flex flex-wrap mb-4">
+                                <div class="mt-3">
+                                    <h4 class="font-weight-bold mb-1">86,376</h4>
+                                    <label class="mb-0 d-flex align-items-center"><span
+                                            class="p-1 bg-primary rounded-circle mr-1"></span>Organic</label>
+                                </div>
+                                <div class="pl-3 ml-3 mt-3 border-left">
+                                    <h4 class="font-weight-bold mb-1">25,001</h4>
+                                    <label class="mb-0 d-flex align-items-center"><span
+                                            class="p-1 bg-info rounded-circle mr-1"></span>Direct</label>
+                                </div>
+                                <div class="pl-3 ml-3 mt-3 border-left d-none d-md-block">
+                                    <h4 class="font-weight-bold mb-1">12,909</h4>
+                                    <label class="mb-0 d-flex align-items-center"><span
+                                            class="p-1 bg-danger rounded-circle mr-1"></span>Refferal</label>
+                                </div>
+                            </div>
+                            <div class="traffic-chart-wrapper">
+                                <div id="trafficFlotChart" class="traffic-flot-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+            <!--<div class="row">
+                <div class="col-xl-9 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-md-4 stretch-card">
+                                <div class="card-body">
+                                    <p class="card-title">Users By Country</p>
+                                    <p class="mb-3 text-muted">The top locations where users of your product are
+                                        located for this month</p>
+                                    <div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <span>United States</span>
+                                            <span class="tx-12 font-weight-bold">3,564</span>
+                                        </div>
+                                        <div class="progress progress-sm mt-2">
+                                            <div class="progress-bar bg-primary" role="progressbar"
+                                                 style="width: 90%" aria-valuenow="90" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <span>United Kingdom</span>
+                                            <span class="tx-12 font-weight-bold">7,567</span>
+                                        </div>
+                                        <div class="progress progress-sm mt-2">
+                                            <div class="progress-bar bg-purple" role="progressbar"
+                                                 style="width: 88%" aria-valuenow="68" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <span>Russia</span>
+                                            <span class="tx-12 font-weight-bold">6,466</span>
+                                        </div>
+                                        <div class="progress progress-sm mt-2">
+                                            <div class="progress-bar" role="progressbar" style="width: 75%"
+                                                 aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <span>China</span>
+                                            <span class="tx-12 font-weight-bold">5,234</span>
+                                        </div>
+                                        <div class="progress progress-sm mt-2">
+                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                 style="width: 65%" aria-valuenow="35" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <span>Australia</span>
+                                            <span class="tx-12 font-weight-bold">4,865</span>
+                                        </div>
+                                        <div class="progress progress-sm mt-2">
+                                            <div class="progress-bar bg-teal" role="progressbar" style="width: 55%"
+                                                 aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 stretch-card">
+                                <div class="card-body overflow-hidden">
+                                    <div id="vmap2" class="vmap-wrapper"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">Mobile Sessions</p>
+                            <p class="mb-3 text-muted">The percentage of users who uses mobile devices compare to
+                                other devices.</p>
+                            <div class="d-flex flex-column align-items-center mg-b-25">
+                                <div>
+                                    <div class="donut-chart chart1">
+                                        <div class="slice one"></div>
+                                        <div class="slice two"></div>
+                                        <div class="chart-center">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-6 d-flex justify-content-end">
+                                    <div>
+                                        <label class="d-flex align-items-center justify-content-end tx-10 text-uppercase font-weight-medium"><span
+                                                class="p-1 mr-1 rounded-circle bg-indigo"></span> Mobile</label>
+                                        <h3 class="font-weight-bold mb-0">6,098</h3>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div>
+                                        <label class="d-flex align-items-center tx-10 text-uppercase font-weight-medium"><span
+                                                class="p-1 mr-1 rounded-circle bg-gray-light"></span>
+                                            Desktop</label>
+                                        <h3 class="font-weight-bold mb-0">3,902</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+            <!--<div class="row">
+                <div class="col-xl-4 grid-margin grid-margin-md-0 stretch-card">
+                    <div class="row">
+                        <div class="col-md-6 col-xl-12 stretch-card grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Acquisition</h6>
+                                    <p class="tx-12 mb-3 text-muted">Tells you where your visitors originated from,
+                                        such as search engines, social networks or website referrals.</p>
+                                    <div class="row">
+                                        <div class="col-6 col-xl-6 d-sm-flex align-items-center">
+                                            <div class="card-chart mr-2 bg-primary">
+                                                 <span class="peity-bar"
+                                                       data-peity="{&quot;fill&quot;: [&quot;#fff&quot;], &quot;width&quot;: 20, &quot;height&quot;: 20 }">6,4,7,5,7</span>
+                                            </div>
+                                            <div>
+                                                <label class="tx-12 mb-1">Bounce Rate</label>
+                                                <h4 class="font-weight-bold mb-0">33.50%</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-xl-6 d-sm-flex align-items-center">
+                                            <div class="card-chart mr-2 bg-purple">
+                                                 <span class="peity-bar"
+                                                       data-peity="{&quot;fill&quot;: [&quot;#fff&quot;], &quot;width&quot;: 21, &quot;height&quot;: 20 }">7,4,5,7,2</span>
+                                            </div>
+                                            <div>
+                                                <label class="tx-12 mb-1">Sessions</label>
+                                                <h4 class="font-weight-bold mb-0">965</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-12 grid-margin-md grid-margin-xl-0 stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Sessions</h6>
+                                    <p class="tx-12 mb-3 text-muted">A session is the period time a user is actively
+                                        engaged with your website, app, etc.</p>
+                                    <div class="row">
+                                        <div class="col-6 d-sm-flex align-items-center">
+                                            <div class="card-chart mr-2">
+                                                 <span class="peity-donut"
+                                                       data-peity='{ "fill": ["#7571f9", "#cad0e8"],  "innerRadius": 14, "radius": 20 }'>4/7</span>
+                                            </div>
+                                            <div>
+                                                <label class="tx-12 mb-1 mt-2 mt-md-0">New Sessions</label>
+                                                <h4 class="font-weight-bold mb-0">26.80%</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 d-sm-flex align-items-center">
+                                            <div class="card-chart mr-2">
+                                                 <span class="peity-donut"
+                                                       data-peity='{ "fill": ["#00BBE0", "#cad0e8"],  "innerRadius": 14, "radius": 20 }'>2/7</span>
+                                            </div>
+                                            <div>
+                                                <label class="tx-12 mb-1 mt-2 mt-md-0">Pages/Session</label>
+                                                <h4 class="font-weight-bold mb-0">105</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8 stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">What pages do your users visit</h6>
+                            <p class="mb-2 text-muted">Part of this date range occurs before the new users metric
+                                had been calculated, so the old users metric is displayed.</p>
+                            <div class="table-responsive">
+                                <table class="table card-table-one">
+                                    <thead>
+                                    <tr>
+                                        <th class="px-0">Country</th>
+                                        <th>Entrances</th>
+                                        <th>Bounce Rate</th>
+                                        <th>Exits</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="px-0">
+                                            <div class="d-flex">
+                                                <i class="flag-icon flag-icon-us flag-icon-squared mr-3"></i>
+                                                <strong>United States</strong>
+                                            </div>
+                                        </td>
+                                        <td><strong>134</strong> (1.51%)</td>
+                                        <td>33.58%</td>
+                                        <td>15.47%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-0">
+                                            <div class="d-flex">
+                                                <i class="flag-icon flag-icon-gb flag-icon-squared mr-3"></i>
+                                                <strong>United Kingdom</strong>
+                                            </div>
+                                        </td>
+                                        <td><strong>290</strong> (3.30%)</td>
+                                        <td>9.22%</td>
+                                        <td>7.99%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-0">
+                                            <div class="d-flex">
+                                                <i class="flag-icon flag-icon-in flag-icon-squared mr-3"></i>
+                                                <strong>India</strong>
+                                            </div>
+                                        </td>
+                                        <td><strong>250</strong> (3.00%)</td>
+                                        <td>20.75%</td>
+                                        <td>2.40%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-0">
+                                            <div class="d-flex">
+                                                <i class="flag-icon flag-icon-ca flag-icon-squared mr-3"></i>
+                                                <strong>Canada</strong>
+                                            </div>
+                                        </td>
+                                        <td><strong>216</strong> (2.79%)</td>
+                                        <td>32.07%</td>
+                                        <td>15.09%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-0">
+                                            <div class="d-flex">
+                                                <i class="flag-icon flag-icon-fr flag-icon-squared mr-3"></i>
+                                                <strong>France</strong>
+                                            </div>
+                                        </td>
+                                        <td><strong>216</strong> (2.79%)</td>
+                                        <td>32.07%</td>
+                                        <td>15.09%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-0">
+                                            <div class="d-flex">
+                                                <i class="flag-icon flag-icon-ph flag-icon-squared mr-3"></i>
+                                                <strong>Philippines</strong>
+                                            </div>
+                                        </td>
+                                        <td><strong>197</strong> (2.12%)</td>
+                                        <td>32.07%</td>
+                                        <td>15.09%</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+        </div>
+        </div>
+
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+
+
+        <!-- {% include 'admin/footer.html' %} -->
+
+
+        <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+
+<script>
+
+    var JsonObj = JSON.parse(data);
+    console.log(data);
+
+    var xdata = [];
+    var ydata = [];
+    var ydata1 = [];
+
+    for (var key in JsonObj) {
+
+        console.log("key>>>>>" + key);
+
+        console.log("innerjson>>>>>>>" + JsonObj[key]);
+
+        var InnerJson = JsonObj[key];
+
+        xdata.push(InnerJson['Username']);
+        ydata.push(InnerJson['Garbage']);
+        ydata1.push(InnerJson['NotGarbage']);
+    }
+    console.log("xdata", xdata);
+    console.log("ydata", ydata);
+    console.log("ydata1", ydata1);
+
+
+    Highcharts.chart({
+        chart: {
+            renderTo: "container_graph",
+
+            type: 'column'
+        },
+        title: {
+            text: 'Garbage Classification Report'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: xdata,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Count'
+            }
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Garbage',
+            data: ydata
+
+        }, {
+            name: 'NotGarbage',
+            data: ydata1
+
+        }]
+    })
+
+
+</script>
+
+<!-- base:js -->
+<script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page-->
+<script src="../../static/adminResources/js/jquery.flot.js"></script>
+<script src="../../static/adminResources/js/jquery.flot.pie.js"></script>
+<script src="../../static/adminResources/js/jquery.flot.resize.js"></script>
+<script src="../../static/adminResources/js/jquery.vmap.min.js"></script>
+<script src="../../static/adminResources/js/jquery.vmap.world.js"></script>
+<script src="../../static/adminResources/js/jquery.vmap.usa.js"></script>
+<script src="../../static/adminResources/js/jquery.peity.min.js"></script>
+<script src="../../static/adminResources/js/jquery.flot.dashes.js"></script>
+<!-- End plugin js for this page-->
+<!-- inject:js -->
+<script src="../../static/adminResources/js/off-canvas.js"></script>
+<script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+<script src="../../static/adminResources/js/template.js"></script>
+<script src="../../static/adminResources/js/settings.js"></script>
+<script src="../../static/adminResources/js/todolist.js"></script>
+<!-- endinject -->
+<!-- plugin js for this page -->
+<!-- End plugin js for this page -->
+<!-- Custom js for this page-->
+<script src="../../static/adminResources/js/dashboard.js"></script>
+<!-- End custom js for this page-->
+</body>
+
+</html>
+

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png"/>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+
+        .auth.lock-full-bg {
+            background: url("../static/adminResources/images/BG.jpg");
+            background-size: cover;
+        }
+        .form-opacity{
+            background: #49505759;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth lock-full-bg">
+            <div class="row w-100 mx-0">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-left py-5 px-4 px-sm-5 border">
+                        <div class="brand-logo">
+                            <img src="../../static/adminResources/images/logo.svg" alt="logo">
+                        </div>
+                        <h4>Hello! let's get started</h4>
+                        <h6 class="font-weight-light">Sign in to continue.</h6>
+                        <form class="pt-3" action="/admin/validateLogin" method="post">
+                            <div class="form-group">
+                                <input type="email" name="loginUsername" class="form-control form-control-lg"
+                                       id="exampleInputEmail1" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="loginPassword" class="form-control form-control-lg"
+                                       id="exampleInputPassword1" placeholder="Password">
+                            </div>
+
+                            <input type="submit"
+                                   class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                   value="Login"><br>
+
+                            {% if error %}
+
+                                <h5 style="color:red" class="text-center mt-1">{{ error }}</h5>
+
+                            {% endif %}
+
+                            <div class="my-2 d-flex justify-content-between align-items-center">
+
+                                <a href="/user/newPassword" class="auth-link text-black">Forgot password?</a>
+                            </div>
+
+                            <div class="text-center mt-4 font-weight-light">
+                                Don't have an account? <a href="/user/loadRegister" class="text-primary">Create</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- base:js -->
+<script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- inject:js -->
+<script src="../../static/adminResources/js/off-canvas.js"></script>
+<script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+<script src="../../static/adminResources/js/template.js"></script>
+<script src="../../static/adminResources/js/settings.js"></script>
+<script src="../../static/adminResources/js/todolist.js"></script>
+<!-- endinject -->
+</body>
+
+</html>

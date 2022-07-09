@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User Register</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .auth.lock-full-bg {
+            background: url("../static/adminResources/images/BG.jpg");
+            background-size: cover;
+        }
+
+        .form-opacity {
+            background: #49505759;
+            border-radius: 20px;
+        }
+
+        .placehoder-color {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center auth lock-full-bg">
+                <div class="row w-100 mx-0">
+                    <div class="col-lg-4 mx-auto">
+                        <div class="auth-form-light text-left py-5 px-4 px-sm-5 border">
+                            <div class="brand-logo">
+                                <img src="../../static/adminResources/images/logo.svg" alt="logo">
+                            </div>
+                            <h4>New here?</h4>
+                            <h6 class="font-weight-light">Signing up is easy. It only takes a few steps</h6>
+                            <form class="pt-3" action="/user/insertRegister" method="post">
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-lg" id="exampleInputUsername1"
+                                        name="registerCompanyname" placeholder="Companyname">
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control form-control-lg" id="exampleInputEmail1"
+                                        name="loginUsername" placeholder="Username">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <select class="form-control form-control-lg" name="register_StateId" id="stateId"
+                                        onchange="loadCityByState()">
+                                        <option>Select State</option>
+
+                                        {% for row1 in stateVOList %}
+                                        <option value="{{ row1['stateId'] }}">{{ row1['stateName'] }}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-control form-control-lg" name="register_CityId" id="cityId">
+                                        <option>Select City</option>
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <textarea type="text" class="form-control form-control-lg" name="registerAddress"
+                                        id="exampleInputPassword1" placeholder="Address"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-lg" name="registerContactNumber"
+                                        id="exampleInputPassword1" placeholder="Contact Number"
+                                        onkeypress="return event.charCode>=48 && event.charCode<=57">
+                                </div>
+
+                                <div class="mt-3">
+                                    <input type="submit"
+                                        class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                        value="SIGN UP">
+                                </div>
+                                <div class="text-center mt-4 font-weight-light">
+                                    Already have an account? <a href="/" class="text-primary">Login</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- base:js -->
+    <script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- inject:js -->
+    <script src="../../static/adminResources/js/off-canvas.js"></script>
+    <script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+    <script src="../../static/adminResources/js/template.js"></script>
+    <script src="../../static/adminResources/js/settings.js"></script>
+    <script src="../../static/adminResources/js/todolist.js"></script>
+    <script type="text/javascript">
+
+        function loadCityByState() {
+
+            var image_StateId = document.getElementById("stateId");
+            var image_CityId = document.getElementById("cityId");
+
+            image_CityId.innerHTML = "";
+            var ajax = new XMLHttpRequest();
+
+            ajax.onreadystatechange = function () {
+
+                if (ajax.readyState == 4) {
+                    var json = JSON.parse(ajax.responseText);
+                    var option1 = document.createElement("option");
+                    option1.value = "Select City";
+                    option1.text = "Select City";
+                    image_CityId.options.add(option1);
+
+                    for (var i = 0; i < json.length; i++) {
+                        var option = document.createElement("option");
+
+                        option.value = json[i];
+                        option.text = json[i];
+
+                        image_CityId.options.add(option)
+                    }
+                }
+            };
+            ajax.open("get", "/admin/ajaxLoadCityByStateRegister?image_StateId=" + image_StateId.value, true);
+
+            ajax.send()
+        }
+
+
+    </script>
+</body>
+
+</html>

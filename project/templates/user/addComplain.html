@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../static/adminResources/css/select2.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png"/>
+</head>
+
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center">
+            <a class="navbar-brand brand-logo" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo.svg" alt="logo"/></a>
+            <a class="navbar-brand brand-logo-mini" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo-mini.svg" alt="logo"/></a>
+        </div>
+        {% include 'user/header.html' %}
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+
+
+        {% include 'user/menu.html' %}
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-header" style="background-color: #7571f9;">
+                                <h4 class="card-title mb-0 text-white" style="font-size: 1rem">Post Complain</h4>
+                            </div>
+                            <div class="card-body">
+                                <form class="forms-sample" action="/user/insertComplain" method="post"
+                                      enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="exampleInputName1">Complain Subject</label>
+                                        <input type="text" name="complainSubject" class="form-control"
+                                               id="exampleInputName1">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleTextarea1">Complain Discription</label>
+                                        <textarea class="form-control" name="complainDescription" id="exampleTextarea1"
+                                                  rows="4"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Complain Attachment</label>
+                                        <input type="file" name="file" class="file-upload-default">
+                                        <div class="input-group col-xs-12">
+                                            <input type="text" class="form-control file-upload-info" disabled>
+                                            <span class="input-group-append">
+                                                <button class="file-upload-browse btn btn-primary"
+                                                        type="button">Upload</button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-header" style="background-color: #7571f9;">
+                                <h4 class="card-title mb-0 text-white" style="font-size: 1rem">Complains</h4>
+                            </div>
+
+                            <div class="card-body">
+                                {% for i in userComplainVOList %}
+                                    {% if i['complainTo_LoginId'] is not none %}
+                                        <div class="breadcrumb d-flex justify-content-between align-items-center bg-inverse-primary" style="background-color: #7571f9;">
+                                             <h4 class="title mb-0 text-white" style="font-size: 1rem;">TokenId: - {{ i['complainTokenId'] }} ({{ i['complainStatus'] }})</h4>
+                                                <a class=" text-muted" href="/user/deleteComplain?complainId={{ i['complainId'] }}">
+                                                    <i class="mdi mdi-delete" style="color: #ff4d4d; font-size: 20px"></i>
+                                                </a>
+                                        </div>
+                                    {% else %}
+                                        <div class="breadcrumb d-flex justify-content-between align-items-center bg-inverse-primary" style="background-color: #7571f9;">
+                                             <h4 class="title mb-0 text-white" style="font-size: 1rem;">TokenId: - {{ i['complainTokenId'] }} ({{ i['complainStatus'] }})</h4>
+                                                <a class=" text-muted" href="/user/deleteComplain?complainId={{ i['complainId'] }}">
+                                                    <i class="mdi mdi-delete" style="color: #ff4d4d; font-size: 20px"></i>
+                                                </a>
+                                        </div>
+                                    {% endif %}
+                                    <div class="d-flex align-items-start profile-feed-item">
+                                        <img src="../../static/adminResources/images/face1.jpg" alt="profile"
+                                             class="img-sm rounded-circle">
+                                        <div class="ml-4" style="width: 100%">
+                                            <h6>
+                                                {{ i['complainSubject'] }}
+                                                <a href="{{ i['complainFilePath'] }}{{ i['complainFileName'] }}"
+                                                   target="_blank"><i class="mdi mdi-file"></i></a>
+                                            </h6>
+                                            <p>
+                                                {{ i['complainDescription'] }}
+                                                <small class="mr-4 text-muted" style="float: right">
+                                                    <i class="mdi mdi-clock mr-1"></i>{{ i['complainDate'] }}
+                                                </small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {% if i['complainTo_LoginId'] is not none %}
+                                        <div class="d-flex align-items-start profile-feed-item">
+                                            <img src="../../static/adminResources/images/face1.jpg" alt="profile"
+                                                 class="ml-5 img-sm rounded-circle">
+                                            <div class="ml-4" style="width: 100%">
+                                                <h6>
+                                                    {{ i['replySubject'] }}
+                                                    <a href="{{ i['replyFilePath'] }}{{ i['replyFileName'] }}"
+                                                       target="_blank"><i class="mdi mdi-file"></i></a>
+                                                </h6>
+                                                <p>
+                                                    {{ i['replyMessage'] }}
+                                                    <small class="mr-4 text-muted" style="float: right">
+                                                    <i class="mdi mdi-clock mr-1"></i>{{ i['replyDate'] }}
+                                                </small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+            {% include 'user/footer.html' %}
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- base:js -->
+<script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- inject:js -->
+<script src="../../static/adminResources/js/off-canvas.js"></script>
+<script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+<script src="../../static/adminResources/js/template.js"></script>
+<script src="../../static/adminResources/js/settings.js"></script>
+<script src="../../static/adminResources/js/todolist.js"></script>
+<!-- endinject -->
+<!-- plugin js for this page -->
+<script src="../../static/adminResources/js/typeahead.bundle.min.js"></script>
+<script src="../../static/adminResources/js/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- Custom js for this page-->
+<script src="../../static/adminResources/js/file-upload.js"></script>
+<script src="../../static/adminResources/js/typeahead.js"></script>
+<script src="../../static/adminResources/js/select2.js"></script>
+<!-- End custom js for this page-->
+</body>
+
+</html>

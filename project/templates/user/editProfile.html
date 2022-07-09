@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../static/adminResources/css/select2.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png"/>
+</head>
+
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center">
+            <a class="navbar-brand brand-logo" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo.svg" alt="logo"/></a>
+            <a class="navbar-brand brand-logo-mini" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo-mini.svg" alt="logo"/></a>
+        </div>
+        {% include 'user/header.html' %}
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+
+
+        {% include 'user/menu.html' %}
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-md-6 grid-margin stretch-card">
+
+                    </div>
+                    <div class="col-md-6 grid-margin stretch-card">
+
+                    </div>
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                             <div class="card-header" style="background-color: #7571f9;">
+                                <h4 class="card-title mb-0 text-white" style="font-size: 1rem">Edit Profile</h4>
+                             </div>
+                            <div class="card-body">
+
+                                <form action="/user/updateRegister" method="post" class="forms-sample">
+
+                                    {% for i in registerVOList %}
+
+                                        <input type="hidden" name="loginId" value="{{ i[1]['loginId'] }}">
+
+                                        <input type="hidden" name="registerId" value="{{ i[0]['registerId'] }}">
+
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword4">Company name</label>
+
+                                        <input type="text" name="registerCompanyname" value="{{ i[0]['registerCompanyname'] }}" class="form-control"
+                                               id="exampleInputPassword4">
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword4">User name</label>
+
+                                        <input type="text" name="loginUsername" value="{{ i[1]['loginUsername'] }}" class="form-control"
+                                               id="exampleInputPassword4">
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleSelectGender">State Name</label>
+                                        <select class="form-control" name="register_StateId" id="exampleSelectGender">
+                                            <option>Select State</option>
+                                            {% for j in stateVOList %}
+                                                <option value="{{ j['stateId'] }}">{{ j['stateName'] }}</option>
+
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleSelectGender">City Name</label>
+                                        <select class="form-control" name="register_CityId" id="exampleSelectGender">
+                                            <option>Select City</option>
+                                            {% for k in cityVOList %}
+                                                <option value="{{ k[0]['cityId'] }}">{{ k[0]['cityName'] }}</option>
+
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword4">Registred Address</label>
+
+                                        <textarea type="text" name="registerAddress"  class="form-control"
+                                                  id="exampleInputPassword4">{{ i[0]['registerAddress'] }}</textarea>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword4">Contact Number</label>
+
+                                        <input type="text" name="registerContactNumber" value="{{ i[0]['registerContactNumber'] }}" class="form-control"
+                                               id="exampleInputPassword4" onkeypress='return event.charCode>=48 && event.charCode<=57'>
+
+                                    </div>
+
+                                {% endfor %}
+                                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+                <!-- content-wrapper ends -->
+                <!-- partial:../../partials/_footer.html -->
+                {% include 'user/footer.html' %}
+                <!-- partial -->
+
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+</div>
+<!-- container-scroller -->
+<!-- base:js -->
+<script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- inject:js -->
+<script src="../../static/adminResources/js/off-canvas.js"></script>
+<script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+<script src="../../static/adminResources/js/template.js"></script>
+<script src="../../static/adminResources/js/settings.js"></script>
+<script src="../../static/adminResources/js/todolist.js"></script>
+<!-- endinject -->
+<!-- plugin js for this page -->
+<script src="../../static/adminResources/js/typeahead.bundle.min.js"></script>
+<script src="../../static/adminResources/js/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- Custom js for this page-->
+<script src="../../static/adminResources/js/file-upload.js"></script>
+<script src="../../static/adminResources/js/typeahead.js"></script>
+<script src="../../static/adminResources/js/select2.js"></script>
+<!-- End custom js for this page-->
+</body>
+
+</html>

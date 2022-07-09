@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../static/adminResources/css/select2.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png" />
+    <script type="text/javascript">
+
+        function loadAreaRatioPrediction() {
+
+            var cropName = document.getElementById("cropName");
+
+            var areaRatio = document.getElementById("areaRatio");
+
+            var cityId = document.getElementById("cityId");
+
+            areaRatio.innerHTML = "";
+
+            var ajax = new XMLHttpRequest();
+
+            ajax.onreadystatechange = function () {
+
+                if (ajax.readyState == 4) {
+
+                    var json = JSON.parse(ajax.responseText);
+
+                    for (var i = 0; i < json.length; i++) {
+                        areaRatio.value = json[i].cropAreaRatio;
+                    }
+                }
+            };
+            ajax.open("get", "/user/ajaxAreaRatioPrediction?cropName=" + cropName.value + "&cityId=" + cityId.value, true)
+
+            ajax.send()
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="container-scroller">
+        <!-- partial:../../partials/_navbar.html -->
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center">
+                <a class="navbar-brand brand-logo" href="../../index.html"><img
+                        src="../../static/adminResources/images/logo.svg" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="../../index.html"><img
+                        src="../../static/adminResources/images/logo-mini.svg" alt="logo" /></a>
+            </div>
+            {% include 'user/header.html' %}
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+
+
+            {% include 'user/menu.html' %}
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="row">
+
+                        <div class="col-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-header" style="background-color: #7571f9;">
+                                    <h4 class="card-title mb-0 text-white" style="font-size: 1rem">Add Prediction</h4>
+                                </div>
+
+                                <div class="card-body">
+                                    <form action="/user/insertPrediction" method="post" class="forms-sample">
+                                        <div class="form-group">
+                                            <label for="exampleSelectGender">City Name</label>
+                                            <select class="form-control" name="prediction_CityId" id="cityId">
+                                                <option>Select City</option>
+                                                {% for i in cityVOList %}
+                                                <option value="{{ i[0]['cityId'] }}">{{ i[0]['cityName'] }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword4">Crop Name</label>
+                                            <select name="predictionCrop" id="cropName" class="form-control"
+                                                onchange="loadAreaRatioPrediction()">
+                                                <option>Select Crop</option>
+                                                {% for i in cropNameList %}
+                                                <option value="{{ i[0] }}">{{ i[0] }}</option>
+                                                {% endfor %}
+                                            </select>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword4">Area(Hacter)</label>
+                                            <input name="predictionArea" id="areaRatio" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword4">Production(Matric Tonnes)</label>
+
+                                            <input type="text" name="predictionProduction" class="form-control"
+                                                id="exampleInputPassword4">
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- content-wrapper ends -->
+                <!-- partial:../../partials/_footer.html -->
+                {% include 'user/footer.html' %}
+                <!-- partial -->
+
+                <!-- main-panel ends -->
+            </div>
+            <!-- page-body-wrapper ends -->
+        </div>
+    </div>
+    <!-- container-scroller -->
+    <!-- base:js -->
+    <script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- inject:js -->
+    <script src="../../static/adminResources/js/off-canvas.js"></script>
+    <script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+    <script src="../../static/adminResources/js/template.js"></script>
+    <script src="../../static/adminResources/js/settings.js"></script>
+    <script src="../../static/adminResources/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- plugin js for this page -->
+    <script src="../../static/adminResources/js/typeahead.bundle.min.js"></script>
+    <script src="../../static/adminResources/js/select2.min.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- Custom js for this page-->
+    <script src="../../static/adminResources/js/file-upload.js"></script>
+    <script src="../../static/adminResources/js/typeahead.js"></script>
+    <script src="../../static/adminResources/js/select2.js"></script>
+
+    <!-- End custom js for this page-->
+</body>
+
+</html>

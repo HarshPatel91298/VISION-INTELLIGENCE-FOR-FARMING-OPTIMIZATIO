@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../static/adminResources/css/select2.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png"/>
+</head>
+
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center">
+            <a class="navbar-brand brand-logo" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo.svg" alt="logo"/></a>
+            <a class="navbar-brand brand-logo-mini" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo-mini.svg" alt="logo"/></a>
+        </div>
+        {% include 'admin/header.html' %}
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+
+
+        {% include 'admin/menu.html' %}
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                             <div class="card-header" style="background-color: #7571f9;">
+                                <h4 class="card-title mb-0 text-white" style="font-size: 1rem">Replay Complain</h4>
+                            </div>
+                            <div class="card-body">
+                                <form class="forms-sample" action="/admin/insertComplainReply" method="post"
+                                      enctype="multipart/form-data">
+
+
+                                    <input type="hidden" name="complainId" value="{{ complainId }}">
+
+
+                                    <div class="form-group">
+                                        <label for="exampleInputName1">Replay Subject</label>
+                                        <input type="text" name="replySubject" class="form-control"
+                                               id="exampleInputName1">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleTextarea1">Replay Message</label>
+                                        <textarea class="form-control" name="replyMessage" id="exampleTextarea1"
+                                                  rows="4"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Replay Attachment</label>
+                                        <input type="file" name="file" class="file-upload-default">
+                                        <div class="input-group col-xs-12">
+                                            <input type="text" class="form-control file-upload-info" disabled>
+                                            <span class="input-group-append">
+                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                        </span>
+                                        </div>
+                                    </div>
+
+                                    {% for i in cameraVOList %}
+                                        <input type="hidden" name="cameraId" value="{{ i['cameraId'] }}">
+                                        <input type="hidden" name="cameraFileName" value="{{ i['cameraFileName'] }}">
+                                        <input type="hidden" name="cameraFilePath" value="{{ i['cameraFilePath'] }}">
+
+                                    {% endfor %}
+
+                                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 grid-margin stretch-card">
+
+                    </div>
+                    <div class="col-md-6 grid-margin stretch-card">
+
+                    </div>
+                    <div class="col-md-6 grid-margin stretch-card">
+
+                    </div>
+                    <div class="col-md-6 grid-margin stretch-card">
+
+                    </div>
+                    <div class="col-md-12 grid-margin stretch-card">
+
+                    </div>
+                    <div class="col-12 grid-margin stretch-card">
+
+                    </div>
+                    <div class="col-12 grid-margin">
+
+                    </div>
+                    <div class="col-md-6 grid-margin stretch-card">
+
+                    </div>
+                    <div class="col-md-6 grid-margin stretch-card">
+
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+            <!-- {% include 'admin/footer.html' %} -->
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- base:js -->
+<script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- inject:js -->
+<script src="../../static/adminResources/js/off-canvas.js"></script>
+<script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+<script src="../../static/adminResources/js/template.js"></script>
+<script src="../../static/adminResources/js/settings.js"></script>
+<script src="../../static/adminResources/js/todolist.js"></script>
+<!-- endinject -->
+<!-- plugin js for this page -->
+<script src="../../static/adminResources/js/typeahead.bundle.min.js"></script>
+<script src="../../static/adminResources/js/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- Custom js for this page-->
+<script src="../../static/adminResources/js/file-upload.js"></script>
+<script src="../../static/adminResources/js/typeahead.js"></script>
+<script src="../../static/adminResources/js/select2.js"></script>
+<!-- End custom js for this page-->
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+
+        <li class="nav-item">
+            <a class="nav-link" href="/user/loadDashbord">
+                <i class="mdi mdi-home menu-icon"></i>
+                <span class="menu-title">Home</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+                <i class="mdi mdi-chart-areaspline menu-icon"></i>
+                <span class="menu-title">Prediction</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="charts">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="/user/loadPrediction">Perform Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user/viewPrediction">View Prediction</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
+                <a class="nav-link" href="/user/viewImage">
+
+                    <i class="mdi mdi mdi-image-multiple menu-icon"></i>
+                    <span class="menu-title">Images</span>
+                </a>
+            </li>
+
+      <!-- <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
+                <i class="mdi mdi mdi-headset menu-icon"></i>
+                <span class="menu-title">Complain</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="tables">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="/user/loadComplain">Post Complain</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user/viewComplain">View Complain</a></li>
+
+                </ul>
+            </div>
+        </li> -->
+
+        <li class="nav-item">
+            <a class="nav-link" href="/user/loadComplain">
+                <i class="mdi mdi-headset menu-icon"></i>
+                <span class="menu-title">Complain</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/user/loadFeedback">
+                <i class="mdi mdi-thumb-up menu-icon"></i>
+                <span class="menu-title">Feedback</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/logoutSession">
+                <i class="mdi mdi-logout menu-icon"></i>
+                <span class="menu-title">Logout</span>
+            </a>
+        </li>
+
+    </ul>
+</nav>

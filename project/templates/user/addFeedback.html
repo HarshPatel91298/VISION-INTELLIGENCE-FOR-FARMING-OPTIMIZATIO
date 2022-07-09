@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../static/adminResources/css/select2.min.css">
+    <link rel="stylesheet" href="../../static/adminResources/css/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../static/adminResources/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../static/adminResources/images/favicon.png"/>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/adminResources/css/star.css">
+    <title>Star rating using pure CSS</title>
+</head>
+
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center">
+            <a class="navbar-brand brand-logo" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo.svg" alt="logo"/></a>
+            <a class="navbar-brand brand-logo-mini" href="../../index.html"><img
+                    src="../../static/adminResources/images/logo-mini.svg" alt="logo"/></a>
+        </div>
+        {% include 'user/header.html' %}
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+
+     {% include 'user/menu.html' %}
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-header" style="background-color: #7571f9;">
+                                <h4 class="card-title mb-0 text-white" style="font-size: 1rem">Post Feedback</h4>
+                            </div>
+                            <div class="card-body">
+                                <form class="forms-sample" action="/user/insertFeedback" method="post">
+
+                                    <label style="margin-top:3% ;float: left">Feedback Rating</label><br>
+
+                                    <div class="rate mb-4">
+                                        <input type="radio" id="star5" name="feedbackRating" value="5"/><label
+                                            for="star5"
+                                            title="text">5
+                                        stars</label>
+                                        <input type="radio" id="star4" name="feedbackRating" value="4"/><label
+                                            for="star4"
+                                            title="text">4
+                                        stars</label>
+                                        <input type="radio" id="star3" name="feedbackRating" value="3"/><label
+                                            for="star3"
+                                            title="text">3
+                                        stars</label>
+                                        <input type="radio" id="star2" name="feedbackRating" value="2"/><label
+                                            for="star2"
+                                            title="text">2
+                                        stars</label>
+                                        <input type="radio" id="star1" name="feedbackRating" value="1"/><label
+                                            for="star1"
+                                            title="text">1
+                                        star</label>
+                                    </div>
+
+
+                                    <div class="form-group" style="clear: left">
+                                        <label for="exampleInputName1">Feedback Subject</label>
+                                        <input type="text" name="feedbackSubject" class="form-control"
+                                               id="exampleInputName1">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleTextarea1">Feedback Discription</label>
+                                        <textarea class="form-control" name="feedbackDescription" id="exampleTextarea1"
+                                                  rows="4"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mr-2">Post</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="row">
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                <div class="card-header" style="background-color: #7571f9;">
+                    <h4 class="card-title mb-0 text-white" style="font-size: 1rem">Feedback</h4>
+                </div>
+                    <div class="card-body">
+                        {% for i in feedbackVOList %}
+                            <div class="d-flex align-items-start profile-feed-item">
+                                <img src="../../static/adminResources/images/face1.jpg" alt="profile"
+                                     class="img-sm rounded-circle">
+                                <div class="ml-4" style="width: 100%">
+                                    <h6>
+                                        {{ i['feedbackSubject'] }}
+                                        <small class="ml-4 text-muted">
+                                            <i class="mdi mdi-clock mr-1"></i>{{ i['feedbackDate'] }}</small>
+                                        <small class="mr-4 text-muted" style="float: right">
+                                            {% for i in range(0,i['feedbackRating']|int) %}
+                                                <i style="color:#F3DD3A;font-size: 20px" class="mdi mdi-star"></i>
+                                            {% endfor %}
+                                        </small>
+                                    </h6>
+                                    <p>
+                                        {{ i['feedbackDescription'] }}
+                                        <a href="/user/deleteFeedback?feedbackId={{ i['feedbackId'] }}">
+                                            <i class="mdi mdi-delete" style="color: #ff4d4d"></i>
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+            {% include 'user/footer.html' %}
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- base:js -->
+<script src="../../static/adminResources/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- inject:js -->
+<script src="../../static/adminResources/js/off-canvas.js"></script>
+<script src="../../static/adminResources/js/hoverable-collapse.js"></script>
+<script src="../../static/adminResources/js/template.js"></script>
+<script src="../../static/adminResources/js/settings.js"></script>
+<script src="../../static/adminResources/js/todolist.js"></script>
+<!-- endinject -->
+<!-- plugin js for this page -->
+<script src="../../static/adminResources/js/typeahead.bundle.min.js"></script>
+<script src="../../static/adminResources/js/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- Custom js for this page-->
+<script src="../../static/adminResources/js/file-upload.js"></script>
+<script src="../../static/adminResources/js/typeahead.js"></script>
+<script src="../../static/adminResources/js/select2.js"></script>
+<script src="../../static/adminResources/js/jquery.barrating.min.js"></script>
+<!-- End custom js for this page-->
+</body>
+
+</html>
